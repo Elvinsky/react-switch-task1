@@ -1,0 +1,4 @@
+echo 'RUNNING BIOME.JS'
+npx @biomejs/biome format --write
+echo 'RUN WAS SUCCESSFULLY FINISHED'
+
