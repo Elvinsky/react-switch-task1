@@ -1,34 +1,43 @@
-const getCookie = (name: string): string | null => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop()?.split(";").shift() || null;
-  }
-  return null;
+export interface FetchError {
+  message: string;
+  status: number;
+  data: unknown;
+}
+
+export interface FetchResponse<T = unknown> {
+  data: T;
+  response: Response;
+}
+
+export const isFetchError = (error: unknown): error is FetchError => {
+  return typeof error === "object" && error !== null && "status" in error && "message" in error;
 };
 
-export const createFetchRequest = async (
+export const createFetchRequest = async <T = unknown>(
   url: string,
   options: RequestInit = {}
-): Promise<Response> => {
-  const baseUrl = import.meta.env.VITE_BASE_URL || "";
-
-  const fullUrl = baseUrl ? `${baseUrl}${url}` : url;
-
-  const accessToken = getCookie("access_token");
-
+): Promise<FetchResponse<T>> => {
   const headers = new Headers(options.headers);
 
-  if (accessToken) {
-    headers.set("Authorization", `Bearer ${accessToken}`);
-  }
+  headers.set("Content-Type", "application/json");
 
   const fetchOptions: RequestInit = {
     ...options,
     headers,
   };
 
-  const response = await fetch(fullUrl, fetchOptions);
+  const response = await fetch(url, fetchOptions);
   const data = await response.json();
-  return data;
+
+  // Throw error object for non-2xx responses
+  if (!response.ok) {
+    const error: FetchError = {
+      message: data.message || data.error || `Request failed with status ${response.status}`,
+      status: response.status,
+      data,
+    };
+    throw error;
+  }
+
+  return { data: data as T, response };
 };

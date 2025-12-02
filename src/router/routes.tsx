@@ -1,5 +1,5 @@
 import type { RouteObject } from "react-router";
-import { queryFunctions } from "../api/helpers/query-functions.ts";
+import { queryFunctions } from "../api/query-functions.ts";
 import AuthorizationPagesLayout from "../layouts/AuthorizationPagesLayout.tsx";
 import ContentPagesLayout from "../layouts/ContentPagesLayout.tsx";
 import Login from "../pages/Authorization/Login.tsx";
@@ -15,12 +15,19 @@ import PostCreation from "../pages/Content/PostCreation.tsx";
 import PostEditor from "../pages/Content/PostEditor.tsx";
 import User from "../pages/Content/User.tsx";
 import Users from "../pages/Content/Users.tsx";
-import { FAQEditorPageLoader, FAQPageLoader } from "./loaders.ts";
+import { loginAction, registerAction } from "./actions.ts";
+import {
+  AuthPageLoader,
+  ContentPageLoader,
+  FAQEditorPageLoader,
+  FAQPageLoader,
+} from "./loaders.ts";
 
 export const routes: RouteObject[] = [
   {
     path: "/",
     element: <ContentPagesLayout />,
+    loader: ContentPageLoader,
     children: [
       {
         index: true,
@@ -73,14 +80,17 @@ export const routes: RouteObject[] = [
   },
   {
     element: <AuthorizationPagesLayout />,
+    loader: AuthPageLoader,
     children: [
       {
         path: "login",
         element: <Login />,
+        action: loginAction,
       },
       {
         path: "register",
         element: <Register />,
+        action: registerAction,
       },
     ],
   },
