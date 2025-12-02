@@ -21,6 +21,12 @@ export const queryFunctions = {
     });
     return data;
   },
+  logout: async () => {
+    const { data } = await createFetchRequest("/api/auth/logout", {
+      method: "POST",
+    });
+    return data;
+  },
 
   register: async (login: string, password: string) => {
     const { data } = await createFetchRequest("/api/register", {
