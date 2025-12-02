@@ -1,4 +1,5 @@
 import type { RouteObject } from "react-router";
+import { queryFunctions } from "../api/helpers/query-functions.ts";
 import AuthorizationPagesLayout from "../layouts/AuthorizationPagesLayout.tsx";
 import ContentPagesLayout from "../layouts/ContentPagesLayout.tsx";
 import Login from "../pages/Authorization/Login.tsx";
@@ -46,6 +47,7 @@ export const routes: RouteObject[] = [
       {
         path: "posts",
         element: <MyPosts />,
+        loader: queryFunctions.getAnswers,
       },
       {
         path: "post/:id",
