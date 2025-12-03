@@ -10,7 +10,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 left-0 h-[95px] bg-gray-300">
+    <header className="sticky top-0 left-0 z-999 h-[95px] bg-gray-300">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-6">
         <Box sx={{ width: 120 }} />
         <h1 className="text-center font-bold text-2xl text-gray-800">REACT TASK</h1>

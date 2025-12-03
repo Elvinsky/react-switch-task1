@@ -15,10 +15,37 @@ export const queryFunctions = {
   },
 
   getSnippets: async () => {
-    const { data } = await createFetchRequest("/api/snippets");
+    const { data } = await createFetchRequest("/api/snippets?page=1&limit=1500&sortBy=id:ASC");
     return data;
   },
 
+  getSnippet: async (id: string) => {
+    const { data } = await createFetchRequest(`/api/snippets/${id}`);
+    return data;
+  },
+
+  markSnippet: async (id: string, type: "like" | "dislike") => {
+    const { data } = await createFetchRequest(`/api/snippets/${id}/mark`, {
+      method: "POST",
+      body: JSON.stringify({ mark: type }),
+    });
+    return data;
+  },
+  addComment: async (id: string, comment: string) => {
+    const { data } = await createFetchRequest("/api//comments", {
+      method: "POST",
+      body: JSON.stringify({ content: comment, snippetId: Number(id) }),
+    });
+    return data;
+  },
+
+  createSnippet: async (language: string, code: string) => {
+    const { data } = await createFetchRequest("/api/snippets", {
+      method: "POST",
+      body: JSON.stringify({ language, code }),
+    });
+    return data;
+  },
   login: async (login: string, password: string) => {
     const { data } = await createFetchRequest("/api/auth/login", {
       method: "POST",

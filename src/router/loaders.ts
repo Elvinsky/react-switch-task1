@@ -20,6 +20,13 @@ export const SnippetsLoader: LoaderFunction = async () => {
   return queryFunctions.getSnippets();
 };
 
+export const PostPageLoader: LoaderFunction = async ({ params }: LoaderFunctionArgs) => {
+  if (!params.id) {
+    throw new Error("Post ID is required");
+  }
+  return queryFunctions.getSnippet(params.id);
+};
+
 export const ContentPageLoader: LoaderFunction = async () => {
   try {
     await queryFunctions.getMe();

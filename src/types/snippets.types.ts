@@ -46,5 +46,6 @@ export interface Snippet {
 
 export interface SnippetComponentProps {
   snippet: SnippetData;
+  idDetailedView: boolean;
   onClick: (snippet: SnippetData) => void;
 }

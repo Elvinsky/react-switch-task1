@@ -21,6 +21,7 @@ import {
   ContentPageLoader,
   FAQEditorPageLoader,
   FAQPageLoader,
+  PostPageLoader,
   SnippetsLoader,
 } from "./loaders.ts";
 
@@ -61,6 +62,7 @@ export const routes: RouteObject[] = [
       {
         path: "post/:id",
         element: <Post />,
+        loader: PostPageLoader,
       },
       {
         path: "post/create",
