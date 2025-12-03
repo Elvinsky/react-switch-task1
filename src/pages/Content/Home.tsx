@@ -1,11 +1,15 @@
-import { Button } from "@mui/material";
-import { useAuth } from "../../stores/useAuth";
+import { useLoaderData } from "react-router";
+import CodeSnippet from "../../components/Snippet/CodeSnippet";
+import type { SnippetData } from "../../types/snippets.types";
 
 export default function Home() {
-  const logout = useAuth((state) => state.logout);
+  const snippets = useLoaderData();
+
   return (
-    <p>
-      <Button onClick={logout}>Logout</Button>
-    </p>
+    <div className="flex flex-col items-center justify-center gap-4">
+      {snippets.data.data.map((snippet: SnippetData) => (
+        <CodeSnippet key={snippet.id} snippet={snippet} onClick={() => {}} />
+      ))}
+    </div>
   );
 }

@@ -16,6 +16,10 @@ export const AnswersLoader: LoaderFunction = async () => {
   return queryFunctions.getAnswers();
 };
 
+export const SnippetsLoader: LoaderFunction = async () => {
+  return queryFunctions.getSnippets();
+};
+
 export const ContentPageLoader: LoaderFunction = async () => {
   try {
     await queryFunctions.getMe();

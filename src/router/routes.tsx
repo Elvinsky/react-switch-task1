@@ -21,6 +21,7 @@ import {
   ContentPageLoader,
   FAQEditorPageLoader,
   FAQPageLoader,
+  SnippetsLoader,
 } from "./loaders.ts";
 
 export const routes: RouteObject[] = [
@@ -32,6 +33,7 @@ export const routes: RouteObject[] = [
       {
         index: true,
         element: <Home />,
+        loader: SnippetsLoader,
       },
       {
         path: "faq",

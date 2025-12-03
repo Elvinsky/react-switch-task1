@@ -14,6 +14,11 @@ export const queryFunctions = {
     return data;
   },
 
+  getSnippets: async () => {
+    const { data } = await createFetchRequest("/api/snippets");
+    return data;
+  },
+
   login: async (login: string, password: string) => {
     const { data } = await createFetchRequest("/api/auth/login", {
       method: "POST",
