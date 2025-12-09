@@ -72,4 +72,42 @@ export const queryFunctions = {
     const { data } = await createFetchRequest<MeResponse>("/api/me");
     return data;
   },
+
+  getUserStats: async (id: string) => {
+    const { data } = await createFetchRequest(`/api/users/${id}/statistic`);
+    return data;
+  },
+
+  getUsers: async () => {
+    const { data } = await createFetchRequest("/api/users");
+    return data;
+  },
+
+  getUser: async (id: string) => {
+    const { data } = await createFetchRequest(`/api/users/${id}`);
+    return data;
+  },
+
+  changeMyUsername: async (username: string) => {
+    const { data } = await createFetchRequest("/api/me", {
+      method: "PATCH",
+      body: JSON.stringify({ username }),
+    });
+    return data;
+  },
+
+  deleteMe: async () => {
+    const { data } = await createFetchRequest("/api/me", {
+      method: "DELETE",
+    });
+    return data;
+  },
+
+  changePassword: async (oldPassword: string, newPassword: string) => {
+    const { data } = await createFetchRequest("/api/me/password", {
+      method: "PATCH",
+      body: JSON.stringify({ oldPassword, newPassword }),
+    });
+    return data;
+  },
 };

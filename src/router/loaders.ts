@@ -50,3 +50,20 @@ export const AuthPageLoader: LoaderFunction = async () => {
     throw error;
   }
 };
+
+export const AccountPageLoader: LoaderFunction = async () => {
+  try {
+    const me = await queryFunctions.getMe();
+    console.log(me);
+    const stats = await queryFunctions.getUserStats(me.data.id);
+    return {
+      user: me.data,
+      statistics: stats.data.statistic,
+    };
+  } catch (error) {
+    if (isFetchError(error) && error.status === 401) {
+      return redirect("/login");
+    }
+    throw error;
+  }
+};

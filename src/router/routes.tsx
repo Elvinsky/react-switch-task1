@@ -15,8 +15,9 @@ import PostCreation from "../pages/Content/PostCreation.tsx";
 import PostEditor from "../pages/Content/PostEditor.tsx";
 import User from "../pages/Content/User.tsx";
 import Users from "../pages/Content/Users.tsx";
-import { loginAction, registerAction } from "./actions.ts";
+import { accountAction, loginAction, registerAction } from "./actions.ts";
 import {
+  AccountPageLoader,
   AuthPageLoader,
   ContentPageLoader,
   FAQEditorPageLoader,
@@ -53,6 +54,8 @@ export const routes: RouteObject[] = [
       {
         path: "account",
         element: <Account />,
+        loader: AccountPageLoader,
+        action: accountAction,
       },
       {
         path: "posts",
