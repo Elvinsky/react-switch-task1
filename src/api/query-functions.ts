@@ -1,10 +1,10 @@
+import type {
+  MeResponse,
+  UserResponse,
+  UserStatsResponse,
+  UsersResponse,
+} from "../types/api/api.types";
 import { createFetchRequest, isFetchError } from "./helpers/create-fetch-request";
-
-interface MeResponse {
-  id: string;
-  username: string;
-  role: string;
-}
 
 export { isFetchError };
 
@@ -68,23 +68,25 @@ export const queryFunctions = {
     return data;
   },
 
-  getMe: async () => {
+  getMe: async (): Promise<MeResponse> => {
     const { data } = await createFetchRequest<MeResponse>("/api/me");
     return data;
   },
 
-  getUserStats: async (id: string) => {
-    const { data } = await createFetchRequest(`/api/users/${id}/statistic`);
+  getUserStats: async (id: string): Promise<UserStatsResponse> => {
+    const { data } = await createFetchRequest<UserStatsResponse>(`/api/users/${id}/statistic`);
     return data;
   },
 
-  getUsers: async () => {
-    const { data } = await createFetchRequest("/api/users");
+  getUsers: async (): Promise<UsersResponse> => {
+    const { data } = await createFetchRequest<UsersResponse>(
+      "/api/users?page=1&limit=150&sortBy=id:ASC"
+    );
     return data;
   },
 
-  getUser: async (id: string) => {
-    const { data } = await createFetchRequest(`/api/users/${id}`);
+  getUser: async (id: string): Promise<UserResponse> => {
+    const { data } = await createFetchRequest<UserResponse>(`/api/users/${id}`);
     return data;
   },
 

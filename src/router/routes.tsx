@@ -13,7 +13,7 @@ import MyPosts from "../pages/Content/MyPosts.tsx";
 import Post from "../pages/Content/Post.tsx";
 import PostCreation from "../pages/Content/PostCreation.tsx";
 import PostEditor from "../pages/Content/PostEditor.tsx";
-import User from "../pages/Content/User.tsx";
+import UserProfile from "../pages/Content/User.tsx";
 import Users from "../pages/Content/Users.tsx";
 import { accountAction, loginAction, registerAction } from "./actions.ts";
 import {
@@ -24,6 +24,8 @@ import {
   FAQPageLoader,
   PostPageLoader,
   SnippetsLoader,
+  UserPageLoader,
+  UsersPageLoader,
 } from "./loaders.ts";
 
 export const routes: RouteObject[] = [
@@ -78,10 +80,12 @@ export const routes: RouteObject[] = [
       {
         path: "users",
         element: <Users />,
+        loader: UsersPageLoader,
       },
       {
         path: "user/:id",
-        element: <User />,
+        element: <UserProfile />,
+        loader: UserPageLoader,
       },
     ],
   },
