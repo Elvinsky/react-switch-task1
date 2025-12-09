@@ -8,16 +8,36 @@ import type {
   UsersResponse,
 } from "../types/api/api.types";
 import type { UserStatistics } from "../types/auth/auth.types";
+import type { FAQResponse, FAQsResponse } from "../types/faq.types";
 import type { User } from "../types/snippets.types";
 
-export const FAQPageLoader: LoaderFunction = async () => {
-  console.log("FAQPageLoader");
-  return true;
+export const FAQPageLoader: LoaderFunction = async (): Promise<FAQsResponse | Response> => {
+  try {
+    const faqs: FAQsResponse = await queryFunctions.getFAQs();
+    return faqs;
+  } catch (error) {
+    if (isFetchError(error) && error.status === 401) {
+      return redirect("/login");
+    }
+    throw error;
+  }
 };
 
-export const FAQEditorPageLoader: LoaderFunction = async ({ params }: LoaderFunctionArgs) => {
-  console.log("FAQEditorPageLoader", params.id);
-  return true;
+export const FAQEditorPageLoader: LoaderFunction = async ({
+  params,
+}: LoaderFunctionArgs): Promise<FAQResponse | Response> => {
+  try {
+    if (!params.id) {
+      throw new Error("FAQ ID is required");
+    }
+    const faq: FAQResponse = await queryFunctions.getFAQ(params.id);
+    return faq;
+  } catch (error) {
+    if (isFetchError(error) && error.status === 401) {
+      return redirect("/login");
+    }
+    throw error;
+  }
 };
 
 export const AnswersLoader: LoaderFunction = async () => {

@@ -4,6 +4,7 @@ import type {
   UserStatsResponse,
   UsersResponse,
 } from "../types/api/api.types";
+import type { FAQResponse, FAQsResponse } from "../types/faq.types";
 import { createFetchRequest, isFetchError } from "./helpers/create-fetch-request";
 
 export { isFetchError };
@@ -109,6 +110,39 @@ export const queryFunctions = {
     const { data } = await createFetchRequest("/api/me/password", {
       method: "PATCH",
       body: JSON.stringify({ oldPassword, newPassword }),
+    });
+    return data;
+  },
+
+  getFAQs: async (): Promise<FAQsResponse> => {
+    const { data } = await createFetchRequest<FAQsResponse>(
+      "/api/questions?page=1&limit=1500&sortBy=id:ASC"
+    );
+    return data;
+  },
+
+  getFAQ: async (id: string): Promise<FAQResponse> => {
+    const { data } = await createFetchRequest<FAQResponse>(`/api/questions/${id}`);
+    return data;
+  },
+
+  createFAQ: async (title: string, description: string, code?: string): Promise<FAQResponse> => {
+    const { data } = await createFetchRequest<FAQResponse>("/api/questions", {
+      method: "POST",
+      body: JSON.stringify({ title, description, code }),
+    });
+    return data;
+  },
+
+  updateFAQ: async (
+    id: string,
+    title: string,
+    description: string,
+    code?: string
+  ): Promise<FAQResponse> => {
+    const { data } = await createFetchRequest<FAQResponse>(`/api/questions/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ title, description, code }),
     });
     return data;
   },
