@@ -1,8 +1,7 @@
 import { Add } from "@mui/icons-material";
 import { Box, Fab } from "@mui/material";
 import { useState } from "react";
-import { useLoaderData, useNavigate, useRevalidator } from "react-router";
-import { queryFunctions } from "../../api/query-functions";
+import { useLoaderData, useNavigate } from "react-router";
 import CodeSnippet from "../../components/Snippet/CodeSnippet";
 import CreateSnippetDialog from "../../components/Snippet/CreateSnippetDialog";
 import type { SnippetData } from "../../types/snippets.types";
@@ -10,37 +9,10 @@ import type { SnippetData } from "../../types/snippets.types";
 export default function Home() {
   const snippets = useLoaderData();
   const navigate = useNavigate();
-  const { revalidate } = useRevalidator();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [language, setLanguage] = useState("");
-  const [code, setCode] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handlePublish = async () => {
-    if (!language.trim() || !code.trim()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await queryFunctions.createSnippet(language, code);
-      setLanguage("");
-      setCode("");
-      setDialogOpen(false);
-      revalidate();
-    } catch (error) {
-      console.error("Failed to create snippet:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const handleClose = () => {
-    if (!isSubmitting) {
-      setLanguage("");
-      setCode("");
-      setDialogOpen(false);
-    }
+    setDialogOpen(false);
   };
 
   return (
@@ -69,16 +41,7 @@ export default function Home() {
         <Add />
       </Fab>
 
-      <CreateSnippetDialog
-        open={dialogOpen}
-        onClose={handleClose}
-        language={language}
-        code={code}
-        isSubmitting={isSubmitting}
-        onLanguageChange={setLanguage}
-        onCodeChange={setCode}
-        onPublish={handlePublish}
-      />
+      <CreateSnippetDialog open={dialogOpen} onClose={handleClose} />
     </Box>
   );
 }

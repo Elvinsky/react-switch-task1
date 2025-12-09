@@ -7,30 +7,44 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { useState } from "react";
+import { useRevalidator } from "react-router";
+import { queryFunctions } from "../../api/query-functions";
 
 interface CreateSnippetDialogProps {
   open: boolean;
   onClose: () => void;
-  language: string;
-  code: string;
-  isSubmitting: boolean;
-  onLanguageChange: (value: string) => void;
-  onCodeChange: (value: string) => void;
-  onPublish: () => void;
 }
 
-export default function CreateSnippetDialog({
-  open,
-  onClose,
-  language,
-  code,
-  isSubmitting,
-  onLanguageChange,
-  onCodeChange,
-  onPublish,
-}: CreateSnippetDialogProps) {
+export default function CreateSnippetDialog({ open, onClose }: CreateSnippetDialogProps) {
+  const [language, setLanguage] = useState("");
+  const [code, setCode] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { revalidate } = useRevalidator();
+
+  const handlePublish = async () => {
+    if (!language.trim() || !code.trim()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await queryFunctions.createSnippet(language, code);
+      setLanguage("");
+      setCode("");
+      onClose();
+      revalidate();
+    } catch (error) {
+      console.error("Failed to create snippet:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleClose = () => {
     if (!isSubmitting) {
+      setLanguage("");
+      setCode("");
       onClose();
     }
   };
@@ -43,7 +57,7 @@ export default function CreateSnippetDialog({
           <TextField
             label="Language"
             value={language}
-            onChange={(e) => onLanguageChange(e.target.value)}
+            onChange={(e) => setLanguage(e.target.value)}
             placeholder="e.g., JavaScript, Python, TypeScript"
             fullWidth
             sx={{
@@ -55,7 +69,7 @@ export default function CreateSnippetDialog({
           <TextField
             label="Code"
             value={code}
-            onChange={(e) => onCodeChange(e.target.value)}
+            onChange={(e) => setCode(e.target.value)}
             multiline
             rows={10}
             placeholder="Enter your code here..."
@@ -73,7 +87,7 @@ export default function CreateSnippetDialog({
           Cancel
         </Button>
         <Button
-          onClick={onPublish}
+          onClick={handlePublish}
           variant="contained"
           disabled={!language.trim() || !code.trim() || isSubmitting}
           sx={{ textTransform: "none", borderRadius: 2 }}
